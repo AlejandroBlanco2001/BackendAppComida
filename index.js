@@ -1,20 +1,15 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 import cors from 'cors';
 const app = express();
+const port = process.env.PORT || 3000;
+const db = require('./src/config/db.config');
 
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/prueba', async (req, res) => {
-  console.log('Test1');
-  res.status(200).json({ message: 'Success' });
+app.listen(port, () => {
+  console.log(`Server running on port http://localhost:${port}`);
 });
-
-app.post('/prueba', async (req, res) => {
-  res.status(200).json({ message: 'Hola' });
-});
-
-app.use((req, res) => {
-  res.status(404).json({ message: 'Not found.' });
-});
-
-app.listen(8080);
