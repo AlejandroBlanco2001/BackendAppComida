@@ -8,6 +8,7 @@ const RestaurantSchema = new mongoose.Schema({
   email: String,
   website: String,
   category: String,
+  rating: Number,
 });
 
 const Restaurant = mongoose.model('Restaurant', RestaurantSchema);

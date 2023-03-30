@@ -1,6 +1,6 @@
 import moongose from 'mongoose';
 
-const ProductoSchema = new moongose.Schema({
+const ProductSchema = new moongose.Schema({
   id: String,
   idRestaurant: String,
   name: String,
@@ -10,6 +10,6 @@ const ProductoSchema = new moongose.Schema({
   status: String,
 });
 
-const Producto = moongose.model('Producto', ProductoSchema);
+const Product = moongose.model('Producto', ProductSchema);
 
-export default Producto;
+export default Product;
