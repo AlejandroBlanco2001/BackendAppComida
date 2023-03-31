@@ -2,7 +2,6 @@ import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 
 export const generateToken = (payload) => {
-  console.log(payload);
   return jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: '4h',
   });

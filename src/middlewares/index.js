@@ -1,3 +1,4 @@
 import JWT from './jwt';
+import SECURITY from './security';
 
-export default { JWT };
+export default { JWT, SECURITY };

@@ -1,3 +1,4 @@
 import userController from './user.controller';
+import deliveryController from './delivery.controller';
 
-export default { userController };
+export default { userController, deliveryController };
