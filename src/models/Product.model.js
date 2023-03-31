@@ -1,15 +1,14 @@
 import moongose from 'mongoose';
 
 const ProductSchema = new moongose.Schema({
-  id: String,
-  idRestaurant: String,
-  name: String,
-  description: String,
-  price: Number,
-  category: String,
-  status: String,
+  idRestaurant: { type: String, required: true },
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  category: { type: String, required: true },
+  price: { type: Number, required: true },
+  status: { type: String, default: 'active' },
 });
 
-const Product = moongose.model('Producto', ProductSchema);
+const Product = moongose.model('Product', ProductSchema);
 
 export default Product;

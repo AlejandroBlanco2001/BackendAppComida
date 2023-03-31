@@ -1,14 +1,13 @@
 import mongoose from 'mongoose';
 
 const RestaurantSchema = new mongoose.Schema({
-  name: String,
-  description: String,
-  direction: String,
-  phone: String,
-  email: String,
-  website: String,
-  category: String,
-  rating: Number,
+  name: { type: String, required: true, unique: true },
+  description: { type: String },
+  direction: { type: String, required: true },
+  phone: { type: String },
+  email: { type: String },
+  category: { type: String, required: true },
+  rating: { type: Number, default: 0 },
 });
 
 const Restaurant = mongoose.model('Restaurant', RestaurantSchema);

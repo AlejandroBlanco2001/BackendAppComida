@@ -1,3 +1,3 @@
-import userRouter from './user.controller';
+import userController from './user.controller';
 
-export default { userRouter };
+export default { userController };

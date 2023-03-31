@@ -1,6 +1,6 @@
-import Pedido from './Pedido.model';
-import Producto from './Product.model';
-import Restaurante from './Restaurante.model';
-import Usuario from './Usuario.model';
+import Delivery from './Delivery.model';
+import Product from './Product.model';
+import Restaurant from './Restaurant.model';
+import User from './User.model';
 
-export { Pedido, Producto, Restaurante, Usuario };
+export { Delivery, Product, Restaurant, User };
