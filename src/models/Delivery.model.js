@@ -15,10 +15,23 @@ const DeliverySchema = new mongoose.Schema(
       ],
       unique: true,
     },
+    isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
 
-const Delivery = mongoose.model('Pedido', DeliverySchema);
+DeliverySchema.pre('find', function () {
+  this.where({ isDeleted: false });
+});
+
+DeliverySchema.pre('findOne', function () {
+  this.where({ isDeleted: false });
+});
+
+DeliverySchema.pre('findByIdAndUpdate', function () {
+  this.where({ status: 'CREADO' });
+});
+
+const Delivery = mongoose.model('Deliver', DeliverySchema);
 
 export default Delivery;

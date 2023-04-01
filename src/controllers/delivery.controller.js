@@ -29,7 +29,7 @@ const getDeliveryByID = (req, res) => {
 
 const getDeliveryByUser = (req, res) => {
   const { id } = req.user;
-  const { idRestaurant, begin_date, end_date } = req.params;
+  const { idRestaurant, begin_date, end_date } = req.query;
   let deliverys = [];
   try {
     deliverys = Delivery.find({
@@ -63,4 +63,33 @@ const getSentDeliveryByUser = (req, res) => {
   res.send(delivery);
 };
 
-export default { createDelivery, getDeliveryByID, getSentDeliveryByUser, getDeliveryByUser };
+const updateDelivery = (req, res) => {
+  const { id } = req.params;
+  try {
+    Delivery.findByIdAndUpdate(id, req.body).exec();
+  } catch (err) {
+    res.status(500).send({ message: err });
+    return;
+  }
+  res.send({ message: 'Delivery was updated successfully!' });
+};
+
+const deleteDelivery = (req, res) => {
+  const { id } = req.params;
+  try {
+    Delivery.deleteOne({ _id: id }).exec();
+  } catch (err) {
+    res.status(500).send({ message: err });
+    return;
+  }
+  res.send({ message: 'Delivery was deleted successfully!' });
+};
+
+export default {
+  createDelivery,
+  getDeliveryByID,
+  getSentDeliveryByUser,
+  getDeliveryByUser,
+  deleteDelivery,
+  updateDelivery,
+};
