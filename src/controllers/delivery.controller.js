@@ -77,7 +77,7 @@ const updateDelivery = (req, res) => {
 const deleteDelivery = (req, res) => {
   const { id } = req.params;
   try {
-    Delivery.deleteOne({ _id: id }).exec();
+    Delivery.findByIdAndUpdate(id, { isDeleted: true }).exec();
   } catch (err) {
     res.status(500).send({ message: err });
     return;

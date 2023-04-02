@@ -1,9 +1,8 @@
 import { User } from '../models/';
-import { hashPassword, generateToken, comparePassword } from '../utils/security';
+import { generateToken, comparePassword } from '../utils/security';
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
-  const hashedPassword = await hashPassword(password);
   let user = null;
   try {
     user = await User.findOne({ email });
@@ -95,7 +94,7 @@ const updateUser = (req, res) => {
 
 const deleteUser = (req, res) => {
   try {
-    User.findByIdAndDelete(req.user.id).exec();
+    User.findByIdAndUpdate(req.user.id, { isDeleted: true }).exec();
   } catch (err) {
     res.status(500).send({ message: err });
     return;
