@@ -34,7 +34,9 @@ const getAllRestaurants = async (req, res) => {
   let restaurants = null;
   const regex = new RegExp(name, 'i');
   try {
-    Restaurant.find({ $or: [{ category: category }, { name: { $regex: regex } }] });
+    Restaurant.find({ $or: [{ category: category }, { name: { $regex: regex } }] }).sort({
+      stars: 'descending',
+    });
   } catch (err) {
     res.status(500).send({ message: err });
     return;

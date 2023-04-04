@@ -32,18 +32,20 @@ const getDeliveryByUser = (req, res) => {
   const { idRestaurant, begin_date, end_date } = req.query;
   let deliverys = [];
   try {
-    deliverys = Delivery.find({
-      $or: [
-        { idUser: id, status: { $in: ['ENVIADO', 'REALIZADO'] } },
-        { idRestaurant: idRestaurant },
-        {
-          createdAt: {
-            $gte: new Date(begin_date),
-            $lt: new Date(end_date),
+    deliverys = Delivery.find(
+      { idUser: id, status: { $in: ['ENVIADO', 'REALIZADO'] } },
+      {
+        $or: [
+          { idRestaurant: idRestaurant },
+          {
+            createdAt: {
+              $gte: new Date(begin_date),
+              $lt: new Date(end_date),
+            },
           },
-        },
-      ],
-    });
+        ],
+      }
+    );
   } catch (err) {
     res.status(500).send({ message: err });
     return;
@@ -51,11 +53,10 @@ const getDeliveryByUser = (req, res) => {
   res.send(deliverys);
 };
 
-const getSentDeliveryByUser = (req, res) => {
-  const { id } = req.user;
+const getSentDelivery = (req, res) => {
   let delivery = null;
   try {
-    delivery = Delivery.find({ idUser: id, status: 'ENVIADO' });
+    delivery = Delivery.find({ status: 'ENVIADO' });
   } catch (err) {
     res.status(500).send({ message: err });
     return;
@@ -88,7 +89,7 @@ const deleteDelivery = (req, res) => {
 export default {
   createDelivery,
   getDeliveryByID,
-  getSentDeliveryByUser,
+  getSentDelivery,
   getDeliveryByUser,
   deleteDelivery,
   updateDelivery,

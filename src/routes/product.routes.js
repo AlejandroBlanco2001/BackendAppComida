@@ -10,7 +10,7 @@ router.post('/', JWT.verifyToken, SECURITY.checkAdmin, productController.createP
 
 router.get('/:id', JWT.verifyToken, SECURITY.checkNotDelivery, productController.getProductById);
 
-router.get('/', JUWT.verifyToken, SECURITY.checkNotDelivery, productController.getAllProducts);
+router.get('/', JWT.verifyToken, SECURITY.checkNotDelivery, productController.getAllProducts);
 
 router.patch('/:id', JWT.verifyToken, SECURITY.checkAdmin, productController.updateProduct);
 
