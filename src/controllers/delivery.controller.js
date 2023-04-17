@@ -6,7 +6,7 @@ const createDelivery = (req, res) => {
     idRestaurant,
     idUser: req.user.id,
     total,
-    status: 'ENVIADO',
+    status: 'CREADO',
     products,
   });
   const deliveryCreated = delivery.save();
@@ -67,7 +67,11 @@ const getSentDelivery = (req, res) => {
 const updateDelivery = (req, res) => {
   const { id } = req.params;
   try {
-    Delivery.findByIdAndUpdate(id, req.body).exec();
+    if (req.user.role === 'User') {
+      Delivery.findOneAndUpdate({ id: id, status: 'CREADO' }, req.body).exec();
+    } else {
+      Delivery.findByIdAndUpdate(id, { status: req.body }).exec();
+    }
   } catch (err) {
     res.status(500).send({ message: err });
     return;

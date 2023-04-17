@@ -6,8 +6,6 @@ const { JWT, SECURITY } = middlewares;
 const { deliveryController } = controllers;
 const router = Router();
 
-console.log(deliveryController.getDeliveryByID);
-
 router.post('/', JWT.verifyToken, SECURITY.checkUser, deliveryController.createDelivery);
 
 router.get('/:id', JWT.verifyToken, SECURITY.checkUser, deliveryController.getDeliveryByID);
@@ -16,7 +14,7 @@ router.get('/', JWT.verifyToken, SECURITY.checkUser, deliveryController.getDeliv
 
 router.get('/user/all', JWT.verifyToken, SECURITY.checkUser, deliveryController.getSentDelivery);
 
-router.patch('/update/:id', JWT.verifyToken, SECURITY.checkUser, deliveryController.updateDelivery);
+router.patch('/update/:id', JWT.verifyToken, deliveryController.updateDelivery);
 
 router.delete(
   '/delete/:id',

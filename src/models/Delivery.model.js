@@ -28,10 +28,6 @@ DeliverySchema.pre('findOne', function () {
   this.where({ isDeleted: false });
 });
 
-DeliverySchema.pre('findByIdAndUpdate', function () {
-  this.where({ status: 'CREADO' });
-});
-
 const Delivery = mongoose.model('Deliver', DeliverySchema);
 
 export default Delivery;

@@ -1,5 +1,5 @@
 const checkUser = (req, res, next) => {
-  if (req.user) {
+  if (req.user.role === 'User') {
     next();
   } else {
     res.status(401).json({ message: 'Unauthorized request' });
@@ -7,7 +7,7 @@ const checkUser = (req, res, next) => {
 };
 
 const checkAdmin = (req, res, next) => {
-  if (req.user && req.user.role === 'ADMIN') {
+  if (req.user && req.user.role === 'Admin') {
     next();
   } else {
     res.status(401).json({ message: 'Unauthorized request' });
@@ -15,7 +15,7 @@ const checkAdmin = (req, res, next) => {
 };
 
 const checkDeliveryMan = (req, res, next) => {
-  if (req.user && req.user.role === 'DELIVERYMAN') {
+  if (req.user && req.user.role === 'Delivery') {
     next();
   } else {
     res.status(401).json({ message: 'Unauthorized request' });
@@ -23,7 +23,7 @@ const checkDeliveryMan = (req, res, next) => {
 };
 
 const checkNotDelivery = (req, res, next) => {
-  if (req.user && req.user.role !== 'DELIVERYMAN') {
+  if (req.user && req.user.role !== 'Delivery') {
     next();
   } else {
     res.status(401).json({ message: 'Unauthorized request' });

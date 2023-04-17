@@ -1,8 +1,9 @@
 import { User } from '../models/';
-import { generateToken, comparePassword } from '../utils/security';
+import { generateToken, comparePassword, hashPassword } from '../utils/security';
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
+  console.log('Email: ', email, 'Password: ', password);
   let user = null;
   try {
     user = await User.findOne({ email });
@@ -11,7 +12,7 @@ const loginUser = async (req, res) => {
     res.status(500).send({ message: err });
     return;
   }
-  if (user.length === 0) {
+  if (!user) {
     res.status(404).send({ message: 'User not found' });
     return;
   }
@@ -26,8 +27,8 @@ const loginUser = async (req, res) => {
     role: user.role,
   });
   res
-    .cookie('token', token, { httpOnly: true, sameSite: 'none', secure: true })
-    .json({ user: user, token: token });
+    .cookie('token', token, { httpOnly: true, sameSite: 'none', secure: false })
+    .json({ token: token });
 };
 
 const registerUser = async (req, res) => {

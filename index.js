@@ -19,3 +19,6 @@ app.listen(port, () => {
 });
 
 app.use('/api/users', routes.userRoutes);
+app.use('/api/restaurants', routes.restaurantRoutes);
+app.use('/api/products', routes.productRoutes);
+app.use('/api/deliverys', routes.deliveryRoutes);

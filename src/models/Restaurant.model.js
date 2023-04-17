@@ -4,11 +4,17 @@ const RestaurantSchema = new mongoose.Schema({
   idAdmin: { type: String, required: true },
   name: { type: String, required: true, unique: true },
   description: { type: String },
-  direction: { type: String, required: true },
+  direction: {
+    road: { type: String, required: true },
+    number: { type: Number, required: true },
+    city: { type: String, required: true },
+    state: { type: String, required: true },
+    country: { type: String, required: true },
+    postal_code: { type: Number, required: true },
+  },
   phone: { type: String },
   email: { type: String },
   category: { type: String, required: true },
-  rating: { type: Number, default: 0 },
   isDeleted: { type: Boolean, default: false },
 });
 

@@ -1,10 +1,10 @@
 import { Product } from '../models';
+import restaurantController from './restaurant.controller';
 
 const createProduct = async (req, res) => {
   const { idRestaurant, name, description, category, price } = req.body;
   const product = new Product({
     idRestaurant,
-    nameRestaurant,
     name,
     description,
     category,
@@ -32,8 +32,13 @@ const getProductById = async (req, res) => {
 const getAllProducts = async (req, res) => {
   const { restaurant, category } = req.query;
   let products = null;
+  if (!restaurant && !category) return res.status(400).json({ message: 'Bad request' });
   try {
-    products = await Product.find({ $or: [{ restaurant: restaurant }, { category: category }] });
+    let idRestaurant = restaurantController.getRestaurantByID(restaurant).id;
+    console.log(idRestaurant);
+    products = await Product.find({
+      $or: [{ idRestaurant: idRestaurant }, { category: category }],
+    });
   } catch (err) {
     res.status(500).json(err);
   }
