@@ -67,11 +67,7 @@ const getSentDelivery = (req, res) => {
 const updateDelivery = (req, res) => {
   const { id } = req.params;
   try {
-    if (req.user.role === 'User') {
-      Delivery.findOneAndUpdate({ id: id, status: 'CREADO' }, req.body).exec();
-    } else {
-      Delivery.findByIdAndUpdate(id, { status: req.body }).exec();
-    }
+    Delivery.findOneAndUpdate({ id: id, status: 'CREADO' }, req.body).exec();
   } catch (err) {
     res.status(500).send({ message: err });
     return;
@@ -90,6 +86,35 @@ const deleteDelivery = (req, res) => {
   res.send({ message: 'Delivery was deleted successfully!' });
 };
 
+const markStatusDelivery = (req, res) => {
+  const { id } = req.params;
+  let delivery = Delivery.findById(id);
+  switch (delivery.status) {
+    case 'ENVIADO':
+      delivery.status = 'ACEPTADO';
+      break;
+    case 'RECIBIDO':
+      delivery.status = 'EN DIRECCIÓN';
+      break;
+    case 'EN DIRECCIÓN':
+      delivery.status = 'REALIZADO';
+      break;
+    default:
+      return res.status(500).send({ message: 'Error in updating delivery' });
+  }
+  res.send({ message: 'Delivery was updated successfully!' });
+};
+
+const markStatusAdmin = (req, res) => {
+  const { id } = req.params;
+  try {
+    Delivery.findByIdAndUpdate(id, { status: 'RECIBIDO' });
+  } catch (err) {
+    res.status(500).send({ message: err });
+    return;
+  }
+  res.send({ message: 'Delivery was updated successfully!' });
+};
 export default {
   createDelivery,
   getDeliveryByID,
@@ -97,4 +122,6 @@ export default {
   getDeliveryByUser,
   deleteDelivery,
   updateDelivery,
+  markStatusDelivery,
+  markStatusAdmin,
 };
