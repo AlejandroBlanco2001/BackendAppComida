@@ -7,6 +7,7 @@ const createDelivery = (req, res) => {
     idUser: req.user.id,
     total,
     status: 'CREADO',
+    distanceRestaurantUser: Math.random() * (10 - 0.1) + 0.1,
     products,
   });
   const deliveryCreated = delivery.save();
@@ -33,10 +34,9 @@ const getDeliveryByUser = (req, res) => {
   let deliverys = [];
   try {
     deliverys = Delivery.find(
-      { idUser: id, status: { $in: ['ENVIADO', 'REALIZADO'] } },
+      { idUser: id, status: { $in: ['ENVIADO', 'REALIZADO'] }, idRestaurant: idRestaurant },
       {
         $or: [
-          { idRestaurant: idRestaurant },
           {
             createdAt: {
               $gte: new Date(begin_date),
@@ -54,9 +54,10 @@ const getDeliveryByUser = (req, res) => {
 };
 
 const getSentDelivery = (req, res) => {
+  let { tipo = 'createdAt', orden = 'desc' } = req.query;
   let delivery = null;
   try {
-    delivery = Delivery.find({ status: 'ENVIADO' });
+    delivery = Delivery.find({ status: 'ENVIADO' }).sort({ [tipo]: orden === 'asc' ? 1 : -1 });
   } catch (err) {
     res.status(500).send({ message: err });
     return;
@@ -86,35 +87,6 @@ const deleteDelivery = (req, res) => {
   res.send({ message: 'Delivery was deleted successfully!' });
 };
 
-const markStatusDelivery = (req, res) => {
-  const { id } = req.params;
-  let delivery = Delivery.findById(id);
-  switch (delivery.status) {
-    case 'ENVIADO':
-      delivery.status = 'ACEPTADO';
-      break;
-    case 'RECIBIDO':
-      delivery.status = 'EN DIRECCIÓN';
-      break;
-    case 'EN DIRECCIÓN':
-      delivery.status = 'REALIZADO';
-      break;
-    default:
-      return res.status(500).send({ message: 'Error in updating delivery' });
-  }
-  res.send({ message: 'Delivery was updated successfully!' });
-};
-
-const markStatusAdmin = (req, res) => {
-  const { id } = req.params;
-  try {
-    Delivery.findByIdAndUpdate(id, { status: 'RECIBIDO' });
-  } catch (err) {
-    res.status(500).send({ message: err });
-    return;
-  }
-  res.send({ message: 'Delivery was updated successfully!' });
-};
 export default {
   createDelivery,
   getDeliveryByID,
@@ -122,6 +94,4 @@ export default {
   getDeliveryByUser,
   deleteDelivery,
   updateDelivery,
-  markStatusDelivery,
-  markStatusAdmin,
 };

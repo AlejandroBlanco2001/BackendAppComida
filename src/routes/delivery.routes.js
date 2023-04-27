@@ -14,20 +14,13 @@ router.get('/', JWT.verifyToken, SECURITY.checkUser, deliveryController.getDeliv
 
 router.get('/user/all', JWT.verifyToken, SECURITY.checkUser, deliveryController.getSentDelivery);
 
-router.patch('/update/:id', JWT.verifyToken, SECURITY.checkUser, deliveryController.updateDelivery);
+router.patch('/update/:id', JWT.verifyToken, deliveryController.updateDelivery);
 
 router.patch(
   '/status/:id',
   JWT.verifyToken,
   SECURITY.checkDeliveryMan,
-  deliveryController.markStatusDelivery
-);
-
-router.patch(
-  '/recieve/:id',
-  JWT.verifyToken,
-  SECURITY.checkAdmin,
-  deliveryController.markStatusAdmin
+  deliveryController.updateDelivery
 );
 
 router.delete(

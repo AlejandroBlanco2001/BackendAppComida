@@ -6,6 +6,7 @@ const DeliverySchema = new mongoose.Schema(
     idUser: { type: String, required: true },
     total: { type: Number, required: true },
     status: { type: String, required: true },
+    distanceRestaurantUser: { type: Number, required: true },
     products: {
       type: [
         {
