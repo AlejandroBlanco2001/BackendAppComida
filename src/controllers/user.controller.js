@@ -3,7 +3,6 @@ import { generateToken, comparePassword, hashPassword } from '../utils/security'
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
-  console.log('Email: ', email, 'Password: ', password);
   let user = null;
   try {
     user = await User.findOne({ email });
@@ -50,11 +49,11 @@ const registerUser = async (req, res) => {
     : res.status(500).send({ message: 'Error in creating user' });
 };
 
-const getUserByID = (req, res) => {
+const getUserByID = async (req, res) => {
   const { id } = req.params;
   let user = null;
   try {
-    user = User.findById(id);
+    user = await User.findById(id).exec();
   } catch (err) {
     res.status(500).send({ message: err });
     return;
@@ -62,11 +61,11 @@ const getUserByID = (req, res) => {
   res.send(user);
 };
 
-const getUserByToken = (req, res) => {
+const getUserByToken = async (req, res) => {
   const { id } = req.user;
   let user = null;
   try {
-    user = User.findById(id);
+    user = await User.findById(id).exec();
   } catch (err) {
     res.status(500).send({ message: err });
     return;

@@ -17,11 +17,11 @@ const createRestaurant = async (req, res) => {
     : res.status(500).send({ message: 'Error in creating restaurant' });
 };
 
-const getRestaurantByID = (req, res) => {
+const getRestaurantByID = async (req, res) => {
   const { id } = req.params;
   let restaurant = null;
   try {
-    restaurant = Restaurant.findById(id);
+    restaurant = await Restaurant.findById(id).exec();
   } catch (err) {
     res.status(500).send({ message: err });
     return;
@@ -74,7 +74,7 @@ const updateRestaurant = async (req, res) => {
       direction,
       phone,
       email,
-    });
+    }).exec();
   } catch (err) {
     res.status(500).send({ message: err });
     return;
@@ -85,7 +85,7 @@ const updateRestaurant = async (req, res) => {
 const deleteRestaurant = async (req, res) => {
   const { id } = req.params;
   try {
-    Restaurant.findByIdAndUpdate(id, { isDeleted: true });
+    Restaurant.findByIdAndUpdate(id, { isDeleted: true }).exec();
   } catch (err) {
     res.status(500).send({ message: err });
     return;

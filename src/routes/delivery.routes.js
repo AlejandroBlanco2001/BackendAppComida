@@ -16,13 +16,6 @@ router.get('/user/all', JWT.verifyToken, SECURITY.checkUser, deliveryController.
 
 router.patch('/update/:id', JWT.verifyToken, deliveryController.updateDelivery);
 
-router.patch(
-  '/status/:id',
-  JWT.verifyToken,
-  SECURITY.checkDeliveryMan,
-  deliveryController.updateDelivery
-);
-
 router.delete(
   '/delete/:id',
   JWT.verifyToken,

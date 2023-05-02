@@ -16,11 +16,11 @@ const createDelivery = (req, res) => {
     : res.status(500).send({ message: 'Error in creating delivery' });
 };
 
-const getDeliveryByID = (req, res) => {
+const getDeliveryByID = async (req, res) => {
   const { id } = req.params;
   let delivery = null;
   try {
-    delivery = Delivery.findById(id);
+    delivery = await Delivery.findById(id).exec();
   } catch (err) {
     res.status(500).send({ message: err });
     return;
@@ -45,7 +45,7 @@ const getDeliveryByUser = (req, res) => {
           },
         ],
       }
-    );
+    ).exec();
   } catch (err) {
     res.status(500).send({ message: err });
     return;
@@ -57,7 +57,9 @@ const getSentDelivery = (req, res) => {
   let { tipo = 'createdAt', orden = 'desc' } = req.query;
   let delivery = null;
   try {
-    delivery = Delivery.find({ status: 'ENVIADO' }).sort({ [tipo]: orden === 'asc' ? 1 : -1 });
+    delivery = Delivery.find({ status: 'ENVIADO' })
+      .sort({ [tipo]: orden === 'asc' ? 1 : -1 })
+      .exec();
   } catch (err) {
     res.status(500).send({ message: err });
     return;

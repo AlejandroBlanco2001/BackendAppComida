@@ -22,7 +22,7 @@ const getProductById = async (req, res) => {
   const { id } = req.params;
   let product = null;
   try {
-    product = await Product.findById(id);
+    product = await Product.findById(id).exec();
   } catch (err) {
     res.status(500).json(err);
   }
@@ -35,10 +35,19 @@ const getAllProducts = async (req, res) => {
   if (!restaurant && !category) return res.status(400).json({ message: 'Bad request' });
   try {
     let idRestaurant = restaurantController.getRestaurantByID(restaurant).id;
-    console.log(idRestaurant);
-    products = await Product.find({
-      $or: [{ idRestaurant: idRestaurant }, { category: category }],
-    });
+    products = await Product.aggreagte([
+      {
+        $match: {
+          $or: [{ idRestaurant: idRestaurant }, { category: category }],
+        },
+      },
+      {
+        $group: {
+          group: '$category',
+          products: { $push: '$$ROOT' },
+        },
+      },
+    ]);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -55,7 +64,7 @@ const updateProduct = async (req, res) => {
       category,
       price,
       status,
-    });
+    }).exec();
   } catch (err) {
     res.status(500).json(err);
     return;
